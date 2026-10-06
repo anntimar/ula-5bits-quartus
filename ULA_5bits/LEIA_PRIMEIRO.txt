@@ -1,0 +1,37 @@
+PROJETO ULA DE 5 BITS — DIAGRAMAS DE BLOCOS
+
+ABRIR E TESTAR
+1. Extraia todo o ZIP para uma NOVA pasta local (nao abra dentro do ZIP). Se estava usando a versao anterior, feche o Quartus antes e abra o QPF desta nova pasta.
+2. Use Quartus Prime Lite/Standard com suporte a Cyclone IV. Projeto configurado para EP4CE22F17C6. Quartus Pro recente nao suporta sintese BDF.
+3. File > Open Project > ula_projeto.qpf.
+4. Processing > Start > Start Analysis & Elaboration; depois Start Compilation.
+5. Abra ula_projeto.bdf para visualizar a hierarquia. Os circuitos internos estao em ula_core.bdf e decoder_7seg.bdf. As conexoes com o mesmo nome sao eletricamente conectadas.
+6. Abra teste_rapido.vwf no University Program VWF/Simulation Waveform Editor. Execute Simulation > Run Functional Simulation. Dependendo da versao, instale/configure o simulador ModelSim/Questa e University Program no menu Tools > Options > EDA Tool Options. Se o editor pedir, selecione o projeto/revisao ula_projeto e regenere as configuracoes de simulacao para a pasta local.
+7. teste_exaustivo.vwf contem todas as 8192 combinacoes; cada entrada dura 100 ns. Compare ao arquivo resultados_esperados.csv. Ignore transitorios imediatamente apos cada troca de entrada.
+
+ENTRADAS E SAIDAS
+A[4..0], B[4..0]: complemento de 2, de -16 a +15.
+S[2..0]: 000 soma; 001 subtracao; 010 MIN; 011 A<=B;
+100 A par; 101 raiz inteira; 110 MAX(0,A-B); 111 3A+2.
+F[4..0]: resultado de 5 bits; em overflow mantem os 5 bits menos significativos.
+Overflow: ativo somente nas operacoes 000, 001, 110 e 111 quando o resultado matematico nao cabe em -16..15.
+Status: A<=B em 011; A par em 100; zero nas demais.
+Negativo: bit 4 de F, inclusive quando ha overflow.
+Unidades[6..0] e Dezenas[6..0]: dois digitos DECIMAIS da magnitude de F; o sinal negativo aparece no LED Negativo. Ex.: -16 -> displays 1 e 6, LED aceso. Ex.: -3 -> 0 e 3, LED aceso.
+Displays ativos em NIVEL BAIXO: bit 0=a, 1=b, 2=c, 3=d, 4=e, 5=f, 6=g. Para hardware ativo alto, inverter os sinais.
+
+CONVENCOES PARA PONTOS NAO DEFINIDOS NO ENUNCIADO
+Raiz: piso(sqrt(A)) para A>=0; F=0 para A<0 (dominio invalido).
+MAX: comparacao antes do truncamento, usando subtracao de 6 bits; por exemplo 15-(-16)=31 gera F=11111 e Overflow=1.
+3A+2: calculo interno de 7 bits e verificacao do overflow final.
+
+IMPLEMENTACAO
+Somadores ripple-carry construidos com XOR, AND e OR; subtracao por complemento de 2; comparacao assinada em 6 bits; selecao por portas AND/OR e decodificacao do seletor, sem multiplexadores prontos; raiz e decodificador por soma de produtos de portas basicas. Nenhum VHDL/Verilog e usado na implementacao.
+Projeto logico novo; nao e uma adaptacao da ULA de 8 bits citada na conversa.
+
+VERIFICACAO E LIMITES
+Logica conferida exaustivamente em avaliador de portas: 8192 casos ULA e 32 casos de display aprovados. Quartus nao esta instalado no ambiente de geracao: compilacao, abertura nativa BDF/VWF e simulacao Quartus ainda devem ser confirmadas localmente.
+Nao ha pinagem fisica de placa: a placa nao foi informada. Para FPGA, ajustar dispositivo e usar Pin Planner conforme o manual da placa antes de programar.
+
+CORRECAO DO ERRO GIO_PIN (gio_pin.cpp, linha 182)
+Adicionado o campo nativo de valor padrao VCC em todos os 21 pinos de entrada dos BDF. Este campo era omitido na versao inicial e o relatorio de travamento indicou m_default_value_text != NULL. A logica e os vetores de teste permanecem os mesmos; recompilacao Quartus deve ser confirmada localmente.

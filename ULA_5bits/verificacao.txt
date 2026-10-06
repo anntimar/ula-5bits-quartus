@@ -1,0 +1,5 @@
+Verificacao logica exaustiva: 8192/8192 combinacoes da ULA e 32/32 entradas do decodificador aprovadas.
+Portas ULA: 527. Portas decodificador: 562.
+Nao foi executada compilacao ou simulacao nativa Quartus: Quartus nao esta instalado no ambiente de geracao.
+Conectividade reconstruida a partir dos BDF gravados e conferida nos 8192 casos: aprovada.
+Correcao: valor padrao nativo VCC presente nos 21 pinos de entrada; estrutura BDF balanceada.

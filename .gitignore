@@ -1,0 +1,27 @@
+# Arquivos gerados pelo Quartus
+db/
+incremental_db/
+output_files/
+simulation/
+*.qws
+*.rpt
+*.summary
+*.smsg
+*.jdi
+*.sof
+*.pof
+*.pin
+*.done
+*.sld
+*.bak
+*.sim.vwf
+*.sim.cvwf
+# Arquivos gerados pelo simulador
+work/
+transcript
+vsim.wlf
+*.vcd
+modelsim.ini
+# Arquivos locais do sistema
+.DS_Store
+Thumbs.db
