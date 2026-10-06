@@ -20,7 +20,6 @@ Os circuitos são implementados em **diagramas de blocos/esquemáticos BDF**, co
 | `ULA_5bits/LEIA_PRIMEIRO.txt` | Instruções originais e convenções da implementação |
 | `ULA_5bits/verificacao.txt` | Registro da verificação lógica feita na geração |
 
-Os circuitos, configurações e testes do ZIP atualizado foram preservados. As pastas de cache e saídas geradas pelo Quartus/Questa foram excluídas do pacote de fontes; podem ser regeneradas. Foi acrescentada uma cópia do teste rápido original. Os registros de verificação que mencionam ausência do Quartus descrevem o ambiente de geração; a execução local posterior é descrita abaixo.
 
 ## Entradas e saídas
 
